@@ -28,10 +28,6 @@ spec:
         env:
         - name: WEB_PORT
           value: '80'
-        - name: OPENAPI_DOCS_URI
-          value: 'http://localhost'
-        - name: DEBUG_LOGGING
-          value: 'true'
         - name: SQL_USER
           value: 'sqladminbYd5320'
         - name: SQL_PASSWORD
