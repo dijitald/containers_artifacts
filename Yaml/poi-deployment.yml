@@ -29,13 +29,25 @@ spec:
         - name: WEB_PORT
           value: '80'
         - name: SQL_USER
-          value: 'sqladminbYd5320'
+          valueFrom:
+            secretKeyRef:
+              name: sqluser
+              key: SQL_USER 
         - name: SQL_PASSWORD
-          value: 'vP4kz8Mn4'
+          valueFrom:
+            secretKeyRef:
+              name: sqlpass
+              key: SQL_PASSWORD 
         - name: SQL_SERVER
-          value: 'sqlserverbyd5320.database.windows.net'
+          valueFrom:
+            secretKeyRef:
+              name: sqlserver
+              key: SQL_SERVER 
         - name: SQL_DBNAME
-          value: 'mydrivingDB'
+          valueFrom:
+            secretKeyRef:
+              name: sqldb
+              key: SQL_DBNAME 
         - name: WEB_SERVER_BASE_URI
           value: 'http://0.0.0.0'
         - name: ASPNETCORE_ENVIRONMENT
