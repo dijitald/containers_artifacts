@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    app: user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+      - name: user-container
+        image : "registrybyd5320.azurecr.io/tripinsights/user:1.0"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: sqluser
+              key: SQL_USER 
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sqlpass
+              key: SQL_PASSWORD 
+        - name: SQL_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: sqlserver
+              key: SQL_SERVER 
+        - name: SQL_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: sqldb
+              key: SQL_DBNAME 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  labels:
+    app: user
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: user
+
