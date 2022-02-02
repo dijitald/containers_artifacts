@@ -8,11 +8,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: userprofile-pod
+      app: userprofile
   template:
     metadata:
       labels:
-        app: userprofile-pod
+        app: userprofile
     spec:
       containers:
       - name: userprofile-container
