@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips-deployment
+  labels:
+    deploy: trips
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      containers:
+      - image: "registrybyd5320.azurecr.io/tripinsights/trips:1.0"
+        imagePullPolicy: Always
+        name: trips
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        env:
+        - name: PORT
+          value: '80'
+        - name: OPENAPI_DOCS_URI
+          value: 'http://localhost'
+        - name: DEBUG_LOGGING
+          value: 'true'
+        - name: SQL_USER
+          value: 'sqladminbYd5320'
+        - name: SQL_PASSWORD
+          value: 'vP4kz8Mn4'
+        - name: SQL_SERVER
+          value: 'sqlserverbyd5320.database.windows.net'
+        - name: SQL_DBNAME
+          value: 'mydrivingDB'
