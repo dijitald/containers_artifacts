@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userprofile-deployment
+  labels:
+    app: userprofile
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: userprofile-pod
+  template:
+    metadata:
+      labels:
+        app: userprofile-pod
+    spec:
+      containers:
+      - name: userprofile-container
+        image : "registrybyd5320.azurecr.io/tripinsights/userprofile:1.0"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          value: 'sqladminbYd5320'
+        - name: SQL_PASSWORD
+          value: 'vP4kz8Mn4'
+        - name: SQL_SERVER
+          value: 'sqlserverbyd5320.database.windows.net'
+        - name: SQL_DBNAME
+          value: 'mydrivingDB'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userprofile-service
+  labels:
+    app: userprofile
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: userprofile
+
