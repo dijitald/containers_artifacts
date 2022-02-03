@@ -29,29 +29,20 @@ spec:
         env:
         - name: WEB_PORT
           value: '80'
-        - name: SQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: sqluser
-              key: SQL_USER 
-        - name: SQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: sqlpass
-              key: SQL_PASSWORD 
-        - name: SQL_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: sqlserver
-              key: SQL_SERVER 
-        - name: SQL_DBNAME
-          valueFrom:
-            secretKeyRef:
-              name: sqldb
-              key: SQL_DBNAME 
         - name: WEB_SERVER_BASE_URI
           value: 'http://0.0.0.0'
         - name: ASPNETCORE_ENVIRONMENT
           value: 'Local'
         - name: CONFIG_FILES_PATH
-          value: '/secrets'
+          value: '/mnt/secrets-store'
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvtrips"
